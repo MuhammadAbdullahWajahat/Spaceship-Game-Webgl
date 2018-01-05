@@ -166,6 +166,12 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		if( shoot.position.x > 10 ){
 			scene.remove(shoot);
 		}
+		// compute distance between bullet and the moon
+		var bulletDistance    = moonMesh.position.distanceTo(shoot.position)
+		if( bulletDistance < 0.5 ){
+			resetMoon()
+			playExplosionSound()
+		}
 	})
 
 	}
