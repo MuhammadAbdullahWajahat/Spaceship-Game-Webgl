@@ -89,7 +89,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		if( spaceship === null )    return
 		// compute distance between spaceship and the moon
 		var distance    = moonMesh.position.distanceTo(spaceship.position)
-		if( distance < 0.3 ){
+		if( distance < 0.5 ){
 			resetMoon()
 			playExplosionSound()
 		}
@@ -143,6 +143,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Shooting the bullets						//
 	//////////////////////////////////////////////////////////////////////////////////
+	var timePrev = Date.now();
 	function shootBullets(){
 		var shoot	= new THREEx.SpaceShips.Shoot()
 		shoot.position.x= -0.3; 
@@ -158,6 +159,14 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		scene.add(detonation);
 		//Ihtesham Yahan kam kar scene.remove(detonation) se wo remove ho jata hai but timer set karna hai ke blink effect aye. is ke ilawa try karo ke jab spaceship ki position change ho to bullet and blink effect ki position bhi change ho
 		
+		onRenderFcts.push(function(delta, now){
+		// move the moon to the left
+		shoot.position.x += +1 * delta;
+		// make it warp
+		if( shoot.position.x > 10 ){
+			scene.remove(shoot);
+		}
+	})
 
 	}
 		
