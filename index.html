@@ -31,6 +31,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	//camera.position.z = spaceship.position.z;
 	//camera.lookAt(spaceship.position);
 	camera.position.z = 3;
+	camera.position.z = 5;
 
 	// declare the rendering loop
 	var onRenderFcts= [];
@@ -73,7 +74,8 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	function resetMoon(){
 		moonMesh.position.x = 5
 		moonMesh.position.x += 5 * (Math.random()-0.5)
-		moonMesh.position.y = 2 * (Math.random()-0.5)       
+		moonMesh.position.y = 2 * (Math.random()-0.5) 
+		moonMesh.position.z = 2 * (Math.random()-0.5)      
 	}
 	resetMoon() 
 
