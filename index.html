@@ -143,19 +143,20 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Shooting the bullets						//
 	//////////////////////////////////////////////////////////////////////////////////
-	var timePrev = Date.now();
+	
 	function shootBullets(){
 		var shoot	= new THREEx.SpaceShips.Shoot()
-		shoot.position.x= -0.3; 
-		shoot.position.z= 0.1;
-		shoot.position.y= 0;
+		shoot.position.x= spaceship.position.x + 0.5; 
+		shoot.position.z= spaceship.position.z;
+		shoot.position.y= spaceship.position.y;
 		scene.add(shoot)
-		// the left detonation effect
+		
+		// the  detonation effect
 		var detonation	= new THREEx.SpaceShips.Detonation()
 		detonation.rotateY(4.5);
-		detonation.position.x=-0.55;
-		detonation.position.z= 0.0;
-		detonation.position.y= -0.05;
+		detonation.position.x=spaceship.position.x + 0.5;
+		detonation.position.z= spaceship.position.z;
+		detonation.position.y= spaceship.position.y;
 		scene.add(detonation);
 		//Ihtesham Yahan kam kar scene.remove(detonation) se wo remove ho jata hai but timer set karna hai ke blink effect aye. is ke ilawa try karo ke jab spaceship ki position change ho to bullet and blink effect ki position bhi change ho
 		
