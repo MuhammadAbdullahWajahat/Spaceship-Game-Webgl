@@ -4,96 +4,117 @@ THREEx.SpaceShips		= {}
 
 THREEx.SpaceShips.baseUrl	= '../'
 
-THREEx.SpaceShips.loadSpaceFighter01	= function(onLoad){
-	var loader	= new THREE.OBJMTLLoader();
-	var baseUrl	= THREEx.SpaceShips.baseUrl 
-	var objUrl	= baseUrl + 'models/SpaceFighter01/SpaceFighter01.obj';
-	var mtlUrl	= baseUrl + 'models/SpaceFighter01/SpaceFighter01.mtl';
-	loader.load(objUrl, mtlUrl, function( object3d ){
+THREEx.SpaceShips._loadObjMtl = function(loaderPath, objBasename, mtlBasename, onLoad, onProgress, onError){
+	var mtlLoader = new THREE.MTLLoader();
+	mtlLoader.setPath( loaderPath );
+	mtlLoader.load( mtlBasename, function( materials ) {
+		materials.preload();
+
+		var objLoader = new THREE.OBJLoader();
+		objLoader.setMaterials( materials );
+		objLoader.setPath( loaderPath );
+		objLoader.load( objBasename, function ( object3d ) {
+			onLoad	&& onLoad(object3d)
+		}, onProgress, onError);
+	});	
+}
+
+THREEx.SpaceShips.loadSpaceFighter01	= function(onLoad, onProgress, onError){
+	var loaderPath = THREEx.SpaceShips.baseUrl  + 'models/SpaceFighter01/'
+	THREEx.SpaceShips._loadObjMtl(loaderPath, 'SpaceFighter01.obj', 'SpaceFighter01.mtl', function(object3d){
+		// set the scale
 		object3d.scale.multiplyScalar(1/300)
 		// change emissive color of all object3d material - they are too dark
-		object3d.traverse(function(object3d){
-			if( object3d.material ){
-				object3d.material.emissive.set('white')
-			}
+		object3d.children.forEach(function(object3d){
+			object3d.material.materials.forEach(function(material){
+				material.emissive.set('#050505')
+			})			
 		})
 		// notify the callback
 		onLoad	&& onLoad(object3d)
-	});		
+	}, onProgress, onError)
 }
 
-THREEx.SpaceShips.loadSpaceFighter02	= function(onLoad){
-	var loader	= new THREE.OBJMTLLoader();
-	var baseUrl	= THREEx.SpaceShips.baseUrl 
-	var objUrl	= baseUrl + 'models/SpaceFighter02/SpaceFighter02.obj';
-	var mtlUrl	= baseUrl + 'models/SpaceFighter02/SpaceFighter02.mtl';
-	loader.load(objUrl, mtlUrl, function( object3d ){
+THREEx.SpaceShips.loadSpaceFighter02	= function(onLoad, onProgress, onError){
+	var loaderPath = THREEx.SpaceShips.baseUrl  + 'models/SpaceFighter02/'
+	THREEx.SpaceShips._loadObjMtl(loaderPath, 'SpaceFighter02.obj', 'SpaceFighter02.mtl', function(object3d){
+		// set the scale
 		object3d.scale.multiplyScalar(1/200)
 		// change emissive color of all object3d material - they are too dark
-		object3d.traverse(function(object3d){
-			if( object3d.material ){
-				object3d.material.emissive.set('white')
+		object3d.children.forEach(function(object3d){
+			if( object3d.material.materials ){
+				object3d.material.materials.forEach(function(material){
+					material.emissive.set('#111')
+				})							
+			}else{
+				object3d.material.emissive.set('#111')
 			}
 		})
 		// notify the callback
 		onLoad	&& onLoad(object3d)
-	});		
+	}, onProgress, onError)
 }
 
-THREEx.SpaceShips.loadSpaceFighter03	= function(onLoad){
-	var loader	= new THREE.OBJMTLLoader();
-	var baseUrl	= THREEx.SpaceShips.baseUrl 
-	var objUrl	= baseUrl + 'models/SpaceFighter03/SpaceFighter03.obj';
-	var mtlUrl	= baseUrl + 'models/SpaceFighter03/SpaceFighter03.mtl';
-	loader.load(objUrl, mtlUrl, function( object3d ){
+
+THREEx.SpaceShips.loadSpaceFighter03	= function(onLoad, onProgress, onError){
+	var loaderPath = THREEx.SpaceShips.baseUrl  + 'models/SpaceFighter03/'
+	THREEx.SpaceShips._loadObjMtl(loaderPath, 'SpaceFighter03.obj', 'SpaceFighter03.mtl', function(object3d){
+		// set the scale
 		object3d.scale.multiplyScalar(1/10)
 		// change emissive color of all object3d material - they are too dark
-		object3d.traverse(function(object3d){
-			if( object3d.material ){
-				object3d.material.emissive.set('white')
+		object3d.children.forEach(function(object3d){
+			if( object3d.material.materials ){
+				object3d.material.materials.forEach(function(material){
+					material.emissive.set('#111')
+				})							
+			}else{
+				object3d.material.emissive.set('#111')
 			}
 		})
 		// notify the callback
 		onLoad	&& onLoad(object3d)
-	});		
+	}, onProgress, onError)
 }
 
-THREEx.SpaceShips.loadShuttle01	= function(onLoad){
-	var loader	= new THREE.OBJMTLLoader();
-	var baseUrl	= THREEx.SpaceShips.baseUrl 
-	var objUrl	= baseUrl + 'models/Shuttle01/Shuttle01.obj';
-	var mtlUrl	= baseUrl + 'models/Shuttle01/Shuttle01.mtl';
-	loader.load(objUrl, mtlUrl, function( object3d ){
+THREEx.SpaceShips.loadShuttle01	= function(onLoad, onProgress, onError){
+	var loaderPath = THREEx.SpaceShips.baseUrl  + 'models/Shuttle01/'
+	THREEx.SpaceShips._loadObjMtl(loaderPath, 'Shuttle01.obj', 'Shuttle01.mtl', function(object3d){
+		// set the scale
 		object3d.scale.multiplyScalar(1/400)
 		// change emissive color of all object3d material - they are too dark
-		object3d.traverse(function(object3d){
-			if( object3d.material ){
-				object3d.material.emissive.set('white')
+		object3d.children.forEach(function(object3d){
+			if( object3d.material.materials ){
+				object3d.material.materials.forEach(function(material){
+					material.emissive.set('#111')
+				})							
+			}else{
+				object3d.material.emissive.set('#111')
 			}
 		})
 		// notify the callback
 		onLoad	&& onLoad(object3d)
-	});		
+	}, onProgress, onError)
 }
 
-THREEx.SpaceShips.loadShuttle02	= function(onLoad){
-	var loader	= new THREE.OBJMTLLoader();
-	var baseUrl	= THREEx.SpaceShips.baseUrl 
-	var objUrl	= baseUrl + 'models/Shuttle02/Shuttle02.obj';
-	var mtlUrl	= baseUrl + 'models/Shuttle02/Shuttle02.mtl';
-	loader.load(objUrl, mtlUrl, function( object3d ){
+THREEx.SpaceShips.loadShuttle02	= function(onLoad, onProgress, onError){
+	var loaderPath = THREEx.SpaceShips.baseUrl  + 'models/Shuttle02/'
+	THREEx.SpaceShips._loadObjMtl(loaderPath, 'Shuttle02.obj', 'Shuttle02.mtl', function(object3d){
+		// set the scale
 		object3d.scale.multiplyScalar(1/400)
 		// change emissive color of all object3d material - they are too dark
-		object3d.traverse(function(object3d){
-			if( object3d.material ){
-				object3d.material.emissive.set('white')
+		object3d.children.forEach(function(object3d){
+			if( object3d.material.materials ){
+				object3d.material.materials.forEach(function(material){
+					material.emissive.set('#111')
+				})							
+			}else{
+				object3d.material.emissive.set('#111')
 			}
 		})
 		// notify the callback
 		onLoad	&& onLoad(object3d)
-	});		
+	}, onProgress, onError)
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //		comment								//
@@ -116,13 +137,14 @@ THREEx.SpaceShips.Shoot	= function(){
 	})
 
 	var container	= new THREE.Object3D
+	container.rotateY(Math.PI/2)
 	container.scale.multiplyScalar(1/2)
 	var nPlanes	= 4;
 	for(var i = 0; i < nPlanes; i++){
 		var geometry	= new THREE.PlaneGeometry(1,1)
 		var mesh	= new THREE.Mesh(geometry, material)
 		mesh.material	= material
-		mesh.rotation.x	= i*Math.PI/nPlanes
+		mesh.rotateX(i*Math.PI/nPlanes)
 		container.add(mesh)
 	}
 	
