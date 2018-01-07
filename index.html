@@ -97,7 +97,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	//////////////////////////////////////////////////////////////////////////////////
 	
 	var moonMesh  = THREEx.Planets.createMoon()
-	
+
 	scene.add(moonMesh)
 	function resetMoon(){
 		moonMesh.position.x = 5
@@ -125,6 +125,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		if( spaceship === null )    return
 		// compute distance between spaceship and the moon
 		var distance    = moonMesh.position.distanceTo(spaceship.position)
+		moonMesh.rotateY(0.05);
 		if( distance < 0.5 ){
 			resetMoon()
 			playExplosionSound()
