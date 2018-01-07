@@ -3,6 +3,14 @@
 <script src="vendor/require.js/require.js"></script>
 <script src="vendor/three.js/examples/js/Detector.js"></script>
 <script src="vendor/threex.windowresize.js"></script>
+<script src="lib/webgl-utils.js"></script>
+<script src="lib/webgl-debug.js"></script>
+<script src="lib/cuon-utils.js"></script>
+<script src="lib/initShaders.js"></script>
+<script src="lib/flatten.js"></script>
+<script src="lib/cuon-matrix.js"></script>
+<script src="lib/dat.gui.min.js"></script>
+
 <body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'><script>
 require([ 'bower_components/threex.spaceships/package.require.js'
 	, 'vendor/three.js/examples/js/loaders/OBJMTLLoader.js'
@@ -12,11 +20,30 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	, 'bower_components/threex.planets/package.require.js'
 	, 'bower_components/webaudiox/build/webaudiox.js'
 	], function(){
+
+	
 	// detect WebGL
 	if( !Detector.webgl ){
 		Detector.addGetWebGLMessage();
 		throw 'WebGL Not Available'
 	} 
+
+	// let transform = function(){
+ //    		this.score = 0;
+ //    		this.Clear = () => render(gl);
+ //  			this.difficulty = 1;
+ //    	}
+
+	// let text = new transform();
+	// let gui = new dat.GUI({
+	// 	autoPlace: false
+	// });
+	// let scoreController = gui.add(text, 'score', 0 , 1000);
+	// let difficultyController = gui.add(text,'difficulty', 1, 3);
+	// gui.add(text,'Clear')
+
+	// let container = document.getElementById("dat.gui");
+	// container.appendChild(gui.domElement);
 	// setup webgl renderer full page
 	var renderer	= new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -35,7 +62,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 
 	// declare the rendering loop
 	var onRenderFcts= [];
-
+	var counter = 0;
 	// handle window resize events
 	var winResize	= new THREEx.WindowResize(renderer, camera)
 
@@ -70,6 +97,7 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	//////////////////////////////////////////////////////////////////////////////////
 	
 	var moonMesh  = THREEx.Planets.createMoon()
+	
 	scene.add(moonMesh)
 	function resetMoon(){
 		moonMesh.position.x = 5
@@ -79,9 +107,15 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 	}
 	resetMoon() 
 
-	onRenderFcts.push(function(delta, now){
+	onRenderFcts.push(function(delta, now, counter){
 		// move the moon to the left
-		moonMesh.position.x += -1 * delta;
+		var counterSpeed = -1;
+		var moonSpeed = counterSpeed;
+		if(counter > 10){
+			moonSpeed = counterSpeed * counter;	
+		}
+		
+		moonMesh.position.x += counterSpeed * delta;
 		// make it warp
 		if( moonMesh.position.x < -3 )  resetMoon()
 	})
@@ -155,25 +189,60 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		
 		// the  detonation effect
 		var detonation	= new THREEx.SpaceShips.Detonation()
-		detonation.rotateY(4.5);
+		var detonation1	= new THREEx.SpaceShips.Detonation()
+		var detonation2	= new THREEx.SpaceShips.Detonation()
+		var detonation3	= new THREEx.SpaceShips.Detonation()
+		var detonation4	= new THREEx.SpaceShips.Detonation()
+
+		detonation.rotateY(5);
+		detonation1.rotateY(2.5);
+		detonation2.rotateY(7.5);
+		detonation3.rotateY(10);
+
 		detonation.position.x=spaceship.position.x + 0.5;
 		detonation.position.z= spaceship.position.z;
 		detonation.position.y= spaceship.position.y;
 		scene.add(detonation);
-		//Ihtesham Yahan kam kar scene.remove(detonation) se wo remove ho jata hai but timer set karna hai ke blink effect aye. is ke ilawa try karo ke jab spaceship ki position change ho to bullet and blink effect ki position bhi change ho
-		
-		onRenderFcts.push(function(delta, now){
+		detonation1.position.x=spaceship.position.x + 0.5;
+		detonation1.position.z= spaceship.position.z;
+		detonation1.position.y= spaceship.position.y;
+		scene.add(detonation1);
+		detonation2.position.x=spaceship.position.x + 0.5;
+		detonation2.position.z= spaceship.position.z;
+		detonation2.position.y= spaceship.position.y;
+		scene.add(detonation2);
+		detonation3.position.x=spaceship.position.x + 0.5;
+		detonation3.position.z= spaceship.position.z;
+		detonation3.position.y= spaceship.position.y;
+		scene.add(detonation3);
+		detonation4.position.x=spaceship.position.x + 0.5;
+		detonation4.position.z= spaceship.position.z;
+		detonation4.position.y= spaceship.position.y;
+		scene.add(detonation4);
+		//scene.remove(detonation);
+
+		onRenderFcts.push(function(delta, now, counter){
 		// move the moon to the left
 		shoot.position.x += +1 * delta;
 		// make it warp
 		if( shoot.position.x > 10 ){
 			scene.remove(shoot);
+
+		}
+		if( shoot.position.x > -0.5){
+			scene.remove(detonation);
+			scene.remove(detonation1);
+			scene.remove(detonation2);
+			scene.remove(detonation3);
+			scene.remove(detonation4);
+
 		}
 		// compute distance between bullet and the moon
 		var bulletDistance    = moonMesh.position.distanceTo(shoot.position)
 		if( bulletDistance < 0.5 ){
 			resetMoon()
 			playExplosionSound()
+			counter++;
 		}
 	})
 
@@ -254,4 +323,6 @@ require([ 'bower_components/threex.spaceships/package.require.js'
 		})
 	})
 })
-</script></body>
+</script>
+<div id="dat.gui">
+</body>
